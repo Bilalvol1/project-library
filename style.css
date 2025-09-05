@@ -5,6 +5,7 @@
     gap: 15px;
     flex-wrap: wrap;
     max-width: 750px;
+    min-height: 290px;
 }
 
 .card {

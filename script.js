@@ -24,7 +24,9 @@ function addBookToLibrary(title, author, pages, status) {
 
 // function that loops through array of objects to display book objects in cards
 function displayBooks() {
+    // cards container
     const cardsContainer = document.querySelector(".cards-container");
+    cardsContainer.textContent = '';
     
     // loops through book object elements
     for (let i = 0; i < myLibrary.length; i++) {
@@ -46,18 +48,109 @@ function displayBooks() {
         pages.textContent =  `Pages: ${myLibrary[i].pages}`;
         card.appendChild(pages);
 
+        let readStatus = document.createElement("div");
+        readStatus.textContent = `Status: ${myLibrary[i].status}`
+        card.appendChild(readStatus)
+
         let uid = document.createElement("div");
         uid.textContent =  `UID: ${myLibrary[i].uid}`;
         card.appendChild(uid);
+
+        const remove = document.createElement("button");
+        remove.textContent = 'delete';
+        card.appendChild(remove);
+        remove.addEventListener("click", () => {
+            removeBtn(myLibrary[i].uid);
+        });
+        
+        card.setAttribute("data-uid", myLibrary[i].uid);
+
+        // change read status
+        const changeStatus = document.createElement("button");
+        changeStatus.textContent = "change status";
+        card.appendChild(changeStatus);
+        changeStatus.setAttribute('id', 'change');
+        changeStatus.addEventListener("click", () => {
+            changeRead(myLibrary[i].uid);
+        })
     }
 }
 
-// testing adding books to array of objects
-addBookToLibrary("My Hero Academia Vol. 1", "Kohei Horikoshi", 192, "read");
-addBookToLibrary("My Hero Academia Vol. 1", "Kohei Horikoshi", 192, "read");
-addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", 1178, "read");
-addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", 1178, "read");
-addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", 1178, "read");
 
-// testing the display books function
-displayBooks();
+// code to change read status
+function changeRead(arrayCard) {
+    let index = 0;
+
+    const displayedCards = document.querySelectorAll(".card");
+    
+    displayedCards.forEach(card => {
+        const displayCard = card.getAttribute('data-uid');
+    
+        if (displayCard === arrayCard) {
+            myLibrary.forEach(obj => {
+            if (obj.uid === arrayCard) {
+                if (obj.status == "read") {
+                    obj.status = "to be read";
+                }
+                else {
+                    obj.status = "read";
+                }
+                displayBooks();
+            }
+            else {
+                index++;
+            }
+        })
+        }
+    })
+}
+
+
+
+// function to remove books from the display and the array
+function removeBtn(arrayCard) {
+    let index = 0;
+
+    const displayedCards = document.querySelectorAll(".card");
+    
+    displayedCards.forEach(card => {
+        const displayCard = card.getAttribute('data-uid');
+    
+        if (displayCard === arrayCard) {
+            myLibrary.forEach(obj => {
+            if (obj.uid === arrayCard) {
+                myLibrary.splice(index, 1);
+                displayBooks();
+            }
+            else {
+                index++;
+            }
+        })
+        }
+    })
+}
+
+
+
+
+//adding books through user input
+const dialog = document.querySelector("dialog");
+const showBtn = document.querySelector("button");
+const submitBtn = document.querySelector("#submitBtn");
+
+const book = document.getElementById("book");
+const author = document.getElementById("author");
+const pages = document.getElementById("pages");
+const read = document.getElementById("status");
+
+showBtn.addEventListener("click", () => {
+    dialog.showModal();
+});
+
+submitBtn.addEventListener("click", (event) => {
+    addBookToLibrary(book.value, author.value, pages.value, read.value);
+    displayBooks();
+    event.preventDefault();
+    dialog.close();
+});
+

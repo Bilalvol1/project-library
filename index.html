@@ -8,6 +8,32 @@
     <script src="script.js" defer></script>
 </head>
 <body>
+    <button>Add a book</button>
+    <dialog>
+        <form method="dialog">
+            <div>
+                <label for="book">Name: </label>
+                <input type="text" id="book">
+            </div>
+            <div>
+                <label for="author">Author: </label>
+                <input type="text" id="author">
+            </div>
+            <div>
+                <label for="pages">Pages: </label>
+                <input type="number" id="pages">
+            </div>
+            <div>
+                <label for="status">Status: </label>
+                <select id="status">
+                    <option value="">--please choose an option--</option>
+                    <option value="read">read</option>
+                    <option value="te be read">to be read</option>
+                </select>
+            </div>
+            <button id="submitBtn">Submit</button>
+        </form>
+    </dialog>
     <div class="cards-container">
         </div>
     </div>
